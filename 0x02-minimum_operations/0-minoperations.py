@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 '''function that calaculate the fewest number of operations'''
 
 
