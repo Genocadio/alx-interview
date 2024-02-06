@@ -2,6 +2,7 @@
 """N queens problem"""
 import sys
 
+
 def nqueens(n, j, list):
     """N queens problem"""
     for i in range(n):
