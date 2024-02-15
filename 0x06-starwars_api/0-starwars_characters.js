@@ -5,28 +5,28 @@ const movieId = process.argv[2];
 
 const apiUrl = `https://swapi.dev/api/films/${movieId}/`;
 
-request(apiUrl, (error, response, body) => {
-  if (error) {
-    console.error('Error:', error);
+request(apiUrl, (err, response, body) => {
+  if (err) {
+    throw err;
   } else {
     const film = JSON.parse(body);
     const characters = film.characters;
-    const printCharacterNames = (index) => {
+    const printNames = (index) => {
       if (index >= characters.length) {
         return;
       }
 
       const characterUrl = characters[index];
-      request(characterUrl, (error, response, body) => {
-        if (error) {
-          console.error('Error:', error);
+      request(characterUrl, (err, response, body) => {
+        if (err) {
+          throw err;
         } else {
           const character = JSON.parse(body);
           console.log(character.name);
-          printCharacterNames(index + 1);
+          printNames(index + 1);
         }
       });
     };
-    printCharacterNames(0);
+    printNames(0);
   }
 });
