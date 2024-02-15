@@ -1,32 +1,32 @@
 #!/usr/bin/node
 
-const request = require('request'); //import request module
+const request = require('request');
 const movieId = process.argv[2];
 
-const apiUrl = `https://swapi.dev/api/films/${movieId}/`; //api url
+const apiUrl = `https://swapi.dev/api/films/${movieId}/`;
 
-request(apiUrl, (err, response, body) => {
+request(apiUrl, (error, response, body) => {
   if (error) {
-    console.error('Error:', err);
+    console.error('Error:', error);
   } else {
     const film = JSON.parse(body);
     const characters = film.characters;
-    const printNamChar = (index) => {
+    const printCharacterNames = (index) => {
       if (index >= characters.length) {
         return;
       }
 
       const characterUrl = characters[index];
-      request(characterUrl, (err, response, body) => {
-        if (err) {
-          console.error('Error:', err);
+      request(characterUrl, (error, response, body) => {
+        if (error) {
+          console.error('Error:', error);
         } else {
           const character = JSON.parse(body);
           console.log(character.name);
-          printNamChar(index + 1);
+          printCharacterNames(index + 1);
         }
       });
     };
-    printNamChar(0);
+    printCharacterNames(0);
   }
 });
