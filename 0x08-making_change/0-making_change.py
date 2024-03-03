@@ -1,4 +1,9 @@
+#!/usr/bin/python3
+'''Change calculator'''
+
+
 def makeChange(coins, total):
+    '''Return the minimum number of coins to make change for a given total'''
     if total <= 0:
         return 0
 
