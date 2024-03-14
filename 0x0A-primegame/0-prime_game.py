@@ -3,37 +3,42 @@
 
 
 def isWinner(x, nums):
-    """Returns the winner of the game"""
-    def is_prime(n):
-        if n < 2:
-            return False
-        for i in range(2, int(n ** 0.5) + 1):
-            if n % i == 0:
-                return False
-        return True
-
-    def get_primes(n):
-        """Returns a list of primes up to n"""
-        primes = []
-        for i in range(2, n + 1):
-            if is_prime(i):
-                primes.append(i)
-        return primes
+    """Check if a number is a winner"""
+    def sieve_of_eratosthenes(n):
+        """Sieve of Eratosthenes"""
+        primes = [True] * (n + 1)
+        primes[0] = primes[1] = False
+        p = 2
+        while p * p <= n:
+            if primes[p]:
+                for i in range(p * p, n + 1, p):
+                    primes[i] = False
+            p += 1
+        return [i for i in range(n + 1) if primes[i]]
 
     def can_win(n):
-        """Returns the winner of the game"""
-        primes = get_primes(n)
-        if len(primes) % 2 == 0:
-            return "Ben"
-        else:
-            return "Maria"
+        """Check if a number can win"""
+        primes = sieve_of_eratosthenes(n)
+        maria_turn = True
+        while n > 1:
+            found_prime = False
+            for prime in primes:
+                if n % prime == 0:
+                    n -= prime
+                    found_prime = True
+                    break
+            if not found_prime:
+                break
+            maria_turn = not maria_turn
+        return maria_turn
 
-    winners = []
+    maria_wins = 0
+    ben_wins = 0
     for n in nums:
-        winners.append(can_win(n))
-
-    maria_wins = winners.count("Maria")
-    ben_wins = winners.count("Ben")
+        if can_win(n):
+            maria_wins += 1
+        else:
+            ben_wins += 1
 
     if maria_wins > ben_wins:
         return "Maria"
