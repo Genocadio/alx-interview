@@ -1,42 +1,43 @@
 #!/usr/bin/python3
+"""Prime game module"""
+
 
 def isWinner(x, nums):
-    """
-    :type x: int
-    :type nums: List[int]
-    :rtype: str
-    """
-    if x <= 0 or nums is None or x != len(nums):
-        return None
+    """Returns the winner of the game"""
+    def is_prime(n):
+        if n < 2:
+            return False
+        for i in range(2, int(n ** 0.5) + 1):
+            if n % i == 0:
+                return False
+        return True
 
-    ben, maria = 0, 0
-    a = [1 for _ in range(sorted(nums)[-1] + 1)]
-    a[0], a[1] = 0, 0
+    def get_primes(n):
+        """Returns a list of primes up to n"""
+        primes = []
+        for i in range(2, n + 1):
+            if is_prime(i):
+                primes.append(i)
+        return primes
 
-    sieve_of_eratosthenes(a)
-
-    for i in nums:
-        if sum(a[0:i + 1]) % 2 == 0:
-            ben += 1
+    def can_win(n):
+        """Returns the winner of the game"""
+        primes = get_primes(n)
+        if len(primes) % 2 == 0:
+            return "Ben"
         else:
-            maria += 1
+            return "Maria"
 
-    return "Ben" if ben > maria else "Maria" if maria > ben else None
+    winners = []
+    for n in nums:
+        winners.append(can_win(n))
 
+    maria_wins = winners.count("Maria")
+    ben_wins = winners.count("Ben")
 
-def sieve_of_eratosthenes(a):
-    """ Returns a list of prime numbers from 0 to n """
-    for i in range(2, len(a)):
-        remove_multiples(a, i)
-
-
-def remove_multiples(ls, x):
-    """
-    :type ls: List[int]
-    :type x: int
-    """
-    for i in range(2, len(ls)):
-        try:
-            ls[i * x] = 0
-        except (ValueError, IndexError):
-            break
+    if maria_wins > ben_wins:
+        return "Maria"
+    elif ben_wins > maria_wins:
+        return "Ben"
+    else:
+        return None
